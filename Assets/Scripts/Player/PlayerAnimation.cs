@@ -11,11 +11,12 @@ namespace Game.Player
     public sealed class PlayerAnimation : MonoBehaviour
     {
         private static readonly int SpeedHash = Animator.StringToHash("Speed");
-        private static readonly int IsRunningHash = Animator.StringToHash("IsRunning");
         private static readonly int IsJumpingHash = Animator.StringToHash("IsJumping");
         private static readonly int ShortRangeAttackHash = Animator.StringToHash("ShortRangeAttack");
         private static readonly int LongRangeAttackHash = Animator.StringToHash("LongRangeAttack");
         private static readonly int IsKnockbackHash = Animator.StringToHash("IsKnockback");
+        private static readonly int IsDeadHash = Animator.StringToHash("IsDead");
+        private static readonly int DeathHash = Animator.StringToHash("Death");
         private static readonly int DirectionHash = Animator.StringToHash("Direction");
 
         private Animator animator;
@@ -24,6 +25,7 @@ namespace Game.Player
         private Vector3 defaultLocalScale;
         private float facingDirection = 1f;
         private bool isKnockback;
+        private bool isDead;
 
         private void Awake()
         {
@@ -82,6 +84,25 @@ namespace Game.Player
             animator.SetBool(IsKnockbackHash, isKnockback);
         }
 
+        /// <summary>
+        /// Triggers the death animation on the Animator and marks the player as dead.
+        /// </summary>
+        public void TriggerDeath()
+        {
+            SetDead(true);
+            animator.SetTrigger(DeathHash);
+        }
+
+        /// <summary>
+        /// Sets whether the player is currently dead.
+        /// </summary>
+        /// <param name="value">True while the player should remain in the dead state.</param>
+        public void SetDead(bool value)
+        {
+            isDead = value;
+            animator.SetBool(IsDeadHash, isDead);
+        }
+
         private void UpdateFacingDirection(float horizontalVelocity)
         {
             if (horizontalVelocity > 0f)
@@ -102,9 +123,9 @@ namespace Game.Player
         private void UpdateAnimatorParameters(float speed, bool isJumping)
         {
             animator.SetFloat(SpeedHash, speed);
-            animator.SetBool(IsRunningHash, playerController.IsSprintPressed);
             animator.SetBool(IsJumpingHash, isJumping);
             animator.SetBool(IsKnockbackHash, isKnockback);
+            animator.SetBool(IsDeadHash, isDead);
             animator.SetFloat(DirectionHash, facingDirection);
         }
     }
