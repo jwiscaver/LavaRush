@@ -31,8 +31,11 @@ namespace Game.Player
         private float lastGroundedTime = float.NegativeInfinity;
         private float lastJumpPressedTime = float.NegativeInfinity;
 
+        public bool IsGrounded => isGrounded;
+        public bool IsSprintPressed => isSprintPressed;
+
         private void Awake()
-        {
+        {   
             playerRigidbody = GetComponent<Rigidbody2D>();
             playerRigidbody.interpolation = RigidbodyInterpolation2D.Interpolate;
             playerRigidbody.constraints |= RigidbodyConstraints2D.FreezeRotation;
