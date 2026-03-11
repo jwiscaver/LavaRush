@@ -4,12 +4,12 @@ This document defines the coding standards for all scripts in this Unity project
 
 AI agents MUST follow these rules when generating or modifying code.
 
-Goals:
-- Readability
-- Maintainability
-- Performance
-- Modular design
-- Predictable architecture
+The goals are:
+
+- readability
+- maintainability
+- performance
+- modular design
 
 Agents must prioritize clarity over cleverness.
 
@@ -24,12 +24,11 @@ Use descriptive and meaningful names for variables, methods, and classes.
 ### PascalCase
 
 Use PascalCase for:
+
 - classes
 - public properties
 - public fields
 - public methods
-- namespaces
-- enums
 
 Examples:
 
@@ -42,6 +41,7 @@ InventoryManager
 ### camelCase
 
 Use camelCase for:
+
 - private fields
 - local variables
 - method parameters
@@ -66,6 +66,7 @@ hasStartedTurn
 canAttack  
 
 Avoid ambiguous names like:
+
 flag  
 state  
 
@@ -97,7 +98,7 @@ PlayerInventory
 
 Avoid deep inheritance hierarchies.
 
-Use Unity s component model instead.
+Use Unity’s component model instead.
 
 Good:
 
@@ -118,110 +119,100 @@ BaseCharacter
 
 Always declare access modifiers.
 
-Correct:
+Never rely on defaults.
+
+Example:
 
 private int health;
 
-Incorrect:
+not
 
 int health;
 
 ---
 
-# Namespaces
+## Namespaces
 
-Scripts should use namespaces mirroring the folder structure.
+Scripts should use namespaces that mirror the folder structure.
 
-Example folder:
+Example:
 
 Assets/Scripts/Player/PlayerController.cs
 
-Example namespace:
-
+```csharp
 namespace Game.Player
 {
     public class PlayerController : MonoBehaviour
     {
     }
-}
+}```
 
-Benefits:
-- prevents naming conflicts
-- improves large-project organization
-- improves IDE navigation
+This prevents naming collisions and keeps large projects organized.
 
----
 
-# Braces
+
+Braces
 
 Always use braces even for single-line statements.
 
 Correct:
 
+```csharp
 if (isDead)
 {
     return;
 }
+```
 
 Avoid:
 
+```csharp
 if (isDead)
     return;
 
----
+```
 
-# Commenting & Documentation
+This improves readability and prevents future bugs.
 
-Prefer self-explanatory code.
+
+Commenting & Documentation
+
+Self-explanatory code is preferred over excessive comments.
+
+Write code that explains itself through clear naming and structure.
 
 Use comments only when logic is not obvious.
 
 Example:
 
-// Prevent player from jumping while airborne
+// Prevent player from jumping while already airborne
 
-Public APIs should use XML documentation.
+Public APIs or reusable systems should use XML documentation.
 
 Example:
 
-/// <summary>
-/// Applies damage to the player.
+/// Applies damage to the player
 /// </summary>
 public void ApplyDamage(int amount)
+Unity Performance Guidelines
 
----
+Unity performance rules must always be followed.
 
-# Unity Lifecycle Order
+Avoid Expensive Operations in Update()
 
-Preferred MonoBehaviour method order:
-
-Awake()  
-OnEnable()  
-Start()  
-Update()  
-FixedUpdate()  
-LateUpdate()  
-OnDisable()  
-OnDestroy()  
-
-Custom methods should appear after Unity lifecycle methods.
-
----
-
-# Unity Performance Guidelines
-
-## Avoid Expensive Operations in Update()
+Never place expensive calls inside Update loops.
 
 Avoid:
 
-GameObject.Find()  
-GetComponent() repeatedly  
-LINQ queries  
-string concatenation  
+GameObject.Find()
 
----
+GetComponent() repeatedly
 
-## Cache Component References
+LINQ queries
+
+string concatenation
+
+Cache Component References
 
 Always cache component references in Awake() or Start().
 
@@ -234,102 +225,99 @@ void Awake()
     rb = GetComponent<Rigidbody>();
 }
 
----
+Do NOT repeatedly call GetComponent in Update.
 
-## Object Pooling
+Object Pooling
 
 Avoid frequent Instantiate() and Destroy() calls.
 
-Use object pools for frequently spawned objects such as:
+For frequently spawned objects (bullets, particles, enemies), use object pools.
 
-- bullets
-- particle systems
-- enemies
-- projectiles
+Example systems:
 
----
+BulletPool
+ParticlePool
+EnemyPool
 
-## Remove Empty Unity Methods
+Remove Empty Unity Methods
 
-Avoid empty MonoBehaviour methods:
+Empty MonoBehaviour methods should be removed.
+
+Example to avoid:
 
 void Update()
 {
 }
 
----
+Even empty methods incur a small performance cost.
 
-# Memory Allocation Rules
+Unity Architecture Guidelines
+ScriptableObjects
 
-Avoid runtime allocations in frequently executed code.
-
-Avoid inside Update:
-- new object creation
-- LINQ queries
-- boxing operations
-- string concatenation
-
-Prefer:
-- cached lists
-- reused buffers
-- object pools
-
----
-
-# Unity Architecture Guidelines
-
-## ScriptableObjects
-
-Game data should be separated from runtime logic using ScriptableObjects.
+Game data should be separated from runtime logic.
 
 Use ScriptableObjects for:
-- item definitions
-- weapon stats
-- configuration values
-- enemy definitions
-- gameplay balance data
 
----
+item definitions
 
-## Design Patterns
+weapon stats
 
-Recommended patterns:
+configuration values
 
-Observer Pattern  
-Factory Pattern  
-State Pattern  
+enemy definitions
 
-Singleton should only be used when necessary.
+game balance data
+
+Example:
+
+WeaponData : ScriptableObject
+
+Design Patterns
+
+Use common game development patterns when appropriate.
+
+Examples:
+
+Observer Pattern
+Factory Pattern
+State Pattern
+Singleton (only when justified)
 
 Avoid overengineering.
 
----
+Patterns should improve modularity and readability.
 
-# Scene Organization
+Scene Organization
 
 Scenes should remain clean and easy to navigate.
 
+Best practices:
+
+Use empty parent GameObjects for grouping
+
+Avoid excessive root objects
+
+Group related systems
+
 Example hierarchy:
 
-GameSystems  
-Player  
-Enemies  
-Environment  
-UI  
+GameSystems
+Player
+Enemies
+Environment
+UI
 
-Use empty parent GameObjects for grouping.
+Avoid Strings for Identification
 
----
+Strings are fragile and slow.
 
-# Avoid Strings for Identification
-
-Strings are fragile and error-prone.
+Avoid using strings for identifiers.
 
 Prefer:
 
-Enums  
-ScriptableObjects  
-Hash values  
+Enums
+ScriptableObjects
+Hash values
 
 Example:
 
@@ -339,11 +327,11 @@ instead of
 
 "Zombie"
 
----
-
-# Event Handling
+Event Handling
 
 When subscribing to events, always unsubscribe.
+
+Failing to do this can cause memory leaks.
 
 Example:
 
@@ -357,32 +345,6 @@ void OnDisable()
     GameEvents.OnGameStart -= HandleGameStart;
 }
 
----
 
-# Folder Organization
 
-Gameplay scripts must follow the project folder structure.
 
-Assets/Scripts
-    Core
-    Player
-    Enemies
-    Systems
-    UI
-    Utilities
-
----
-
-# AI Agent Compliance
-
-AI agents generating code MUST:
-
-1. Follow naming conventions exactly.
-2. Place scripts in the correct folders.
-3. Avoid performance anti-patterns.
-4. Avoid duplicate gameplay systems.
-5. Follow architecture rules defined in ARCHITECTURE.md.
-6. Ensure scripts compile in Unity without warnings.
-7. Prefer modular reusable components over monolithic scripts.
-
-If a generated solution violates any rule in this document, the agent must revise the code before returning the result.
