@@ -411,7 +411,7 @@ Transform:
   m_GameObject: {fileID: 1052370176}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.4708, y: 0.78, z: 0}
+  m_LocalPosition: {x: 7.37, y: -0.15, z: 0}
   m_LocalScale: {x: 7.5971546, y: 0.9498, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -453,7 +453,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game.Player.PlayerController
   moveSpeed: 5
   sprintMultiplier: 1.5
-  jumpForce: 10
+  jumpForce: 15
   jumpBufferSeconds: 0.1
   coyoteTimeSeconds: 0.15
   groundCheck: {fileID: 1751883817}
@@ -513,7 +513,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -593,7 +593,7 @@ Transform:
   m_GameObject: {fileID: 1118015803}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.16, y: -0.72, z: 0}
+  m_LocalPosition: {x: -7.41, y: -0.81, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

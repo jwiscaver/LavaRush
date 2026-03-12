@@ -15,8 +15,8 @@ namespace Game.Player
         private static readonly int SpeedHash = Animator.StringToHash("Speed");
         private static readonly int SpeedMultiplierHash = Animator.StringToHash("SpeedMultiplier");
         private static readonly int IsJumpingHash = Animator.StringToHash("IsJumping");
-        private static readonly int ShortRangeAttackHash = Animator.StringToHash("ShortRangeAttack");
-        private static readonly int LongRangeAttackHash = Animator.StringToHash("LongRangeAttack");
+        private static readonly int MeleeAttackHash = Animator.StringToHash("MeleeAttack");
+        private static readonly int RangedAttackHash = Animator.StringToHash("RangedAttack");
         private static readonly int IsKnockbackHash = Animator.StringToHash("IsKnockback");
         private static readonly int IsDeadHash = Animator.StringToHash("IsDead");
         private static readonly int DeathHash = Animator.StringToHash("Death");
@@ -60,23 +60,23 @@ namespace Game.Player
         /// </summary>
         public void TriggerAttack()
         {
-            TriggerShortRangeAttack();
+            TriggerMeleeAttack();
         }
 
         /// <summary>
-        /// Triggers the short-range weapon attack animation on the Animator.
+        /// Triggers the melee weapon attack animation on the Animator.
         /// </summary>
-        public void TriggerShortRangeAttack()
+        public void TriggerMeleeAttack()
         {
-            animator.SetTrigger(ShortRangeAttackHash);
+            animator.SetTrigger(MeleeAttackHash);
         }
 
         /// <summary>
-        /// Triggers the long-range weapon attack animation on the Animator.
+        /// Triggers the ranged weapon attack animation on the Animator.
         /// </summary>
-        public void TriggerLongRangeAttack()
+        public void TriggerRangedAttack()
         {
-            animator.SetTrigger(LongRangeAttackHash);
+            animator.SetTrigger(RangedAttackHash);
         }
 
         /// <summary>
