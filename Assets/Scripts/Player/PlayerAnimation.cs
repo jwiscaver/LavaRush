@@ -10,7 +10,10 @@ namespace Game.Player
     [RequireComponent(typeof(Rigidbody2D))]
     public sealed class PlayerAnimation : MonoBehaviour
     {
+        private const float GroundedBufferSeconds = 0.05f;
+
         private static readonly int SpeedHash = Animator.StringToHash("Speed");
+        private static readonly int SpeedMultiplierHash = Animator.StringToHash("SpeedMultiplier");
         private static readonly int IsJumpingHash = Animator.StringToHash("IsJumping");
         private static readonly int ShortRangeAttackHash = Animator.StringToHash("ShortRangeAttack");
         private static readonly int LongRangeAttackHash = Animator.StringToHash("LongRangeAttack");
@@ -24,6 +27,7 @@ namespace Game.Player
         private Rigidbody2D playerRigidbody;
         private Vector3 defaultLocalScale;
         private float facingDirection = 1f;
+        private float groundedTimer;
         private bool isKnockback;
         private bool isDead;
 
@@ -44,10 +48,11 @@ namespace Game.Player
         {
             float horizontalVelocity = playerRigidbody.linearVelocity.x;
             float speed = Mathf.Abs(horizontalVelocity);
-            bool isJumping = !playerController.IsGrounded;
+
+            UpdateGroundedBuffer();
 
             UpdateFacingDirection(horizontalVelocity);
-            UpdateAnimatorParameters(speed, isJumping);
+            UpdateAnimatorParameters(speed, groundedTimer <= 0f);
         }
 
         /// <summary>
@@ -120,9 +125,26 @@ namespace Game.Player
                 defaultLocalScale.z);
         }
 
+        private void UpdateGroundedBuffer()
+        {
+            if (playerController.IsGrounded)
+            {
+                groundedTimer = GroundedBufferSeconds;
+            }
+            else
+            {
+                groundedTimer -= Time.deltaTime;
+            }
+        }
+
         private void UpdateAnimatorParameters(float speed, bool isJumping)
         {
-            animator.SetFloat(SpeedHash, speed);
+            float maxHorizontalSpeed = Mathf.Max(playerController.MaxHorizontalSpeed, 0.01f);
+            float normalizedSpeed = Mathf.Clamp01(speed / maxHorizontalSpeed);
+            float speedMultiplier = speed / maxHorizontalSpeed;
+
+            animator.SetFloat(SpeedHash, normalizedSpeed, 0.05f, Time.deltaTime);
+            animator.SetFloat(SpeedMultiplierHash, speedMultiplier);
             animator.SetBool(IsJumpingHash, isJumping);
             animator.SetBool(IsKnockbackHash, isKnockback);
             animator.SetBool(IsDeadHash, isDead);

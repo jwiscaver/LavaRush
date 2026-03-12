@@ -31,6 +31,7 @@ namespace Game.Player
         private float lastGroundedTime = float.NegativeInfinity;
         private float lastJumpPressedTime = float.NegativeInfinity;
 
+        public float MaxHorizontalSpeed => moveSpeed * sprintMultiplier;
         public bool IsGrounded => isGrounded;
         public bool IsSprintPressed => isSprintPressed;
 
