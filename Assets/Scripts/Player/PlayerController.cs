@@ -11,7 +11,7 @@ namespace Game.Player
         [SerializeField] private float sprintMultiplier = 1.5f;
 
         [Header("Jump")]
-        [SerializeField] private float jumpForce = 7f;
+        [SerializeField] private float jumpForce = 15f;
         [SerializeField] private float jumpBufferSeconds = 0.1f;
         [SerializeField] private float coyoteTimeSeconds = 0.15f;
 

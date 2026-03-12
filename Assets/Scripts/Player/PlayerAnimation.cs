@@ -143,7 +143,7 @@ namespace Game.Player
             float normalizedSpeed = Mathf.Clamp01(speed / maxHorizontalSpeed);
             float speedMultiplier = speed / maxHorizontalSpeed;
 
-            animator.SetFloat(SpeedHash, normalizedSpeed, 0.05f, Time.deltaTime);
+            animator.SetFloat(SpeedHash, normalizedSpeed, 0.03f, Time.deltaTime);
             animator.SetFloat(SpeedMultiplierHash, speedMultiplier);
             animator.SetBool(IsJumpingHash, isJumping);
             animator.SetBool(IsKnockbackHash, isKnockback);
