@@ -5,7 +5,6 @@ namespace Game.Player
     /// <summary>
     /// Drives player animation parameters from current movement and player state.
     /// </summary>
-    [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(PlayerController))]
     [RequireComponent(typeof(Rigidbody2D))]
     public sealed class PlayerAnimation : MonoBehaviour
@@ -22,7 +21,7 @@ namespace Game.Player
         private static readonly int DeathHash = Animator.StringToHash("Death");
         private static readonly int DirectionHash = Animator.StringToHash("Direction");
 
-        private Animator animator;
+        [SerializeField] Animator animator;
         private PlayerController playerController;
         private Rigidbody2D playerRigidbody;
         private Vector3 defaultLocalScale;
@@ -33,7 +32,6 @@ namespace Game.Player
 
         private void Awake()
         {
-            animator = GetComponent<Animator>();
             playerController = GetComponent<PlayerController>();
             playerRigidbody = GetComponent<Rigidbody2D>();
             defaultLocalScale = transform.localScale;
